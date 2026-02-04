@@ -1,1 +1,51 @@
-/* You can add global styles to this file, and also import other style files */
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+}
+html.p-dark {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+html.p-dark .topbar {
+  background-color: #1e1e1e;
+}
+
+body {
+  background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' width='1440' height='560' preserveAspectRatio='none' viewBox='0 0 1440 560'%3e%3cg mask='url(%26quot%3b%23SvgjsMask1050%26quot%3b)' fill='none'%3e%3crect width='1440' height='560' x='0' y='0' fill='rgba(77%2c 182%2c 172%2c 1)'%3e%3c/rect%3e%3cpath d='M0%2c556.124C104.173%2c551.079%2c194.598%2c495.429%2c285.252%2c443.86C380.876%2c389.463%2c511.093%2c353.15%2c542.271%2c247.647C573.919%2c140.552%2c453.039%2c47.661%2c434.898%2c-62.529C417.334%2c-169.216%2c496.027%2c-288.508%2c438.892%2c-380.302C381.719%2c-472.158%2c258.165%2c-497.024%2c151.876%2c-517.242C52.524%2c-536.14%2c-47.84%2c-521.812%2c-144.236%2c-491.223C-238.986%2c-461.157%2c-333.963%2c-420.822%2c-396.213%2c-343.32C-457.423%2c-267.113%2c-462.879%2c-165.097%2c-483.012%2c-69.447C-504.607%2c33.152%2c-551.258%2c137.167%2c-518.297%2c236.698C-484.196%2c339.67%2c-395.922%2c415.468%2c-303.579%2c472.379C-212.367%2c528.593%2c-107.018%2c561.307%2c0%2c556.124' fill='%2337867f'%3e%3c/path%3e%3cpath d='M1440 1028.755C1565.741 1054.517 1684.199 1172.155 1804.287 1126.841 1921.377 1082.658 1967.738 937.031 2002.037 816.674 2033.347 706.8050000000001 2001.992 594.586 1988.288 481.168 1974.233 364.84299999999996 1986.752 240.25 1920.6970000000001 143.473 1851.579 42.208999999999946 1741.146-31.850000000000023 1621.106-56.791000000000054 1504.835-80.94899999999996 1392.274-24.048000000000002 1278.519 10.044999999999959 1165.446 43.93399999999997 1032.449 50.72399999999999 957.659 142.04899999999998 883.198 232.973 899.168 363.956 892.593 481.295 886.559 588.983 871.079 701.408 920.956 797.04 969.8389999999999 890.767 1063.9560000000001 951.845 1160.483 994.937 1247.954 1033.987 1346.157 1009.528 1440 1028.755' fill='%237fcac3'%3e%3c/path%3e%3c/g%3e%3cdefs%3e%3cmask id='SvgjsMask1050'%3e%3crect width='1440' height='560' fill='white'%3e%3c/rect%3e%3c/mask%3e%3c/defs%3e%3c/svg%3e");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+  min-height: 100vh;
+
+}
+::ng-deep .custom-panel-header .p-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+::ng-deep .custom-panel-header .p-panel-header-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Cible le bouton “closable” dans l’en-tête de p-dialog */
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon {
+  /* On force le bouton à être un carré, et on centre son contenu */
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+/* On baisse légèrement la ligne-height pour être sûr que l’icône “x” soit verticalement alignée */
+:host ::ng-deep .p-dialog .p-dialog-header .p-dialog-header-icon .pi {
+  line-height: 1;
+}
