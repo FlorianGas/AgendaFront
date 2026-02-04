@@ -1,0 +1,28 @@
+<div class="layout">
+  <!-- Barre de navigation horizontale -->
+  <div class="topbar">
+    <div class="logo-wrapper">
+      <img ngSrc="../../../../assets/img/logo.png" alt="Logo" width="50" height="50" />
+      <span class="title">AgendApp</span>
+    </div>
+
+    <div class="Logout">
+      <p-button  icon="pi pi-sign-out" (onClick)="onlogout()" label="Déconnexion"></p-button>
+    </div>
+  </div>
+
+  <!-- Sidebar verticale fixe -->
+  <nav class="sidebar">
+    <a  routerLink="/dashboard">Accueil</a>
+    <a  routerLink="/appointments/me">Mes rendez-vous</a>
+    <a  routerLink="/appointment/create">Prendre rendez-vous</a>
+
+    <a  routerLink="/appointments/pro/me">Rendez-vous clients</a>
+    <a  routerLink="login">Prestations</a>
+    <a  routerLink="/availability">Disponibilités</a>
+    <a  routerLink="/clients">Mes clients</a>
+    <a  routerLink="/clients">Mon profil</a>
+    <a routerLink="/notifications">Notifications</a>
+  </nav>
+
+</div>

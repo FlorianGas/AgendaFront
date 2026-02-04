@@ -1,0 +1,36 @@
+<p-dialog
+  [(visible)]="visible"
+  modal
+  header="Détails du rendez-vous"
+  [closable]="true"
+  [dismissableMask]="true"
+  [style]="{ width: '450px' }"
+  (onHide)="onClose()"
+>
+  <div class="p-fluid">
+    <div class="field">
+      <label>Date et heure</label>
+      <p>{{ appointment?.scheduled_time | date: 'full' }}</p>
+    </div>
+
+    <div class="field">
+      <label>Durée</label>
+      <p>{{ appointment?.duration_minutes }} minutes</p>
+    </div>
+
+    <div class="field">
+      <label>Statut</label>
+      <p>{{ appointment?.status | titlecase }}</p>
+    </div>
+
+    <div class="field">
+      <label>Client</label>
+      <p>{{ appointment?.client_id?.first_name }} {{ appointment?.client_id?.last_name }}</p>
+    </div>
+
+    <div class="mt-4 flex justify-content-end gap-2">
+      <button pButton label="Fermer" class="p-button-text" (click)="onClose()"></button>
+      <button pButton label="Modifier" icon="pi pi-pencil" (click)="editAppointment()"></button>
+    </div>
+  </div>
+</p-dialog>

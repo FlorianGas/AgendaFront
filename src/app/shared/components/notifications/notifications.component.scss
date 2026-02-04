@@ -1,0 +1,135 @@
+/* notifications.component.scss */
+
+/* Container global pour un look “dashboard” cohérent */
+:host {
+  display: block;
+  max-width: 80%;
+  margin: 1rem 1rem 1rem auto;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  min-height: 80vh;
+
+  h2 {
+    text-align: center;
+    color: #00796b;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+}
+
+/* PANEL NOTIFICATIONS */
+p-panel.custom-panel-notifs {
+  border-radius: 1rem !important;
+  overflow: hidden;
+
+  /* Header du panel */
+  ::ng-deep .p-panel-header {
+    background: #e0f2f1 !important;
+    color: #004d40 !important;
+    font-weight: 600;
+  }
+
+  /* En-tête avec bouton « Tout effacer » */
+  .header-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #333;
+    }
+
+    .p-button-danger {
+      color: #c62828;
+    }
+  }
+
+  /* ScrollPanel intégré */
+  p-scrollPanel {
+    border-radius: 0 0 1rem 1rem;
+    background: #fafafa;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+  }
+
+  /* Grille responsive de notifications */
+  .notif-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1rem;
+    padding: 1rem;
+
+    @media (max-width: 600px) {
+      grid-template-columns: 1fr;
+      padding: 0.5rem;
+    }
+  }
+
+  /* Carte de notification */
+  .notif-card {
+    background: #ffffff;
+    border-radius: 0.5rem;
+    border-left: 4px solid transparent;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+
+    &.unread {
+      border-left-color: #26a69a;
+      background-color: #e8f5e9;
+      font-weight: 600;
+    }
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    /* En-tête de la carte */
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e0f2f1;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem 0.5rem 0 0;
+
+      .pi {
+        font-size: 1.25rem;
+        color: #26a69a;
+        margin-right: 0.5rem;
+      }
+
+      .type {
+        font-size: 0.95rem;
+        color: #004d40;
+      }
+
+      .time {
+        font-size: 0.85rem;
+        color: #888;
+      }
+    }
+
+    /* Corps du message */
+    .message {
+      padding: 0.75rem 1rem;
+      font-size: 1rem;
+      color: #444;
+      background: #fafafa;
+      border-radius: 0 0 0.5rem 0.5rem;
+      line-height: 1.4;
+    }
+  }
+
+  /* État vide */
+  .empty-state {
+    text-align: center;
+    margin: 2rem 0;
+    color: #777;
+    font-size: 1.1rem;
+  }
+}

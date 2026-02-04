@@ -1,0 +1,113 @@
+<form [formGroup]="form" (ngSubmit)="submit()"  class="p-fluid create-appointment-form">
+
+  <!-- Client (affiché uniquement pour les professionnels) -->
+  <div class="p-field mb-3" *ngIf="isProfessional">
+    <label for="client_id">Client</label>
+    <p-dropdown
+      inputId="client_id"
+      formControlName="client_id"
+      [options]="clients"
+      optionLabel="label"
+      optionValue="_id"
+      placeholder="Sélectionner un client"
+      [filter]="true"
+    >
+      <ng-template let-client pTemplate="item">
+        <div>
+          <strong>{{ client.label }}</strong><br />
+          <small>{{ client.user_id?.email || '-' }}</small>
+        </div>
+      </ng-template>
+
+      <ng-template let-client pTemplate="selectedItem">
+        <div *ngIf="client; else noClient">
+          <strong>{{ client.label }}</strong>
+        </div>
+        <ng-template #noClient>Choisir un client</ng-template>
+      </ng-template>
+    </p-dropdown>
+  </div>
+
+  <!-- Professionnel (affiché uniquement pour les clients) -->
+  <div class="p-field mb-3" *ngIf="!isProfessional">
+    <label for="professional_id">Professionnel</label>
+    <p-dropdown
+      inputId="professional_id"
+      formControlName="professional_id"
+      [options]="professionals"
+      optionLabel="label"
+      optionValue="_id"
+      placeholder="Sélectionner un professionnel"
+      [filter]="true"
+    >
+      <ng-template let-pro pTemplate="item">
+        <div>
+          <strong>{{ pro.label }}</strong><br />
+          <small>{{ pro.specialization || '-' }}</small>
+        </div>
+      </ng-template>
+
+      <ng-template let-pro pTemplate="selectedItem">
+        <div *ngIf="pro; else noPro">
+          <strong>{{ pro.label }}</strong>
+        </div>
+        <ng-template #noPro>Choisir un professionnel</ng-template>
+      </ng-template>
+    </p-dropdown>
+  </div>
+
+  <!-- Prestation -->
+  <div class="p-field mb-3">
+    <label for="type_id">Prestation</label>
+    <p-dropdown
+      inputId="type_id"
+      formControlName="type_id"
+      [options]="appointmentTypes"
+      optionLabel="name"
+      optionValue="_id"
+      placeholder="Sélectionner une prestation"
+      [disabled]="!form.get('professional_id')?.value"
+      [filter]="true"
+    ></p-dropdown>
+  </div>
+
+  <!-- Date & heure -->
+  <div class="p-field mb-3" *ngIf="form.get('type_id')?.value">
+    <label for="scheduled_time">Date & Heure</label>
+    <p-calendar
+      inputId="scheduled_time"
+      formControlName="scheduled_time"
+      [showTime]="true"
+      hourFormat="24"
+      showIcon="true"
+      placeholder="Choisir une date"
+    ></p-calendar>
+  </div>
+
+  <!-- Durée -->
+  <div class="p-field mb-3">
+    <label for="duration_minutes">Durée (minutes)</label>
+    <input
+      id="duration_minutes"
+      pInputText
+      type="number"
+      formControlName="duration_minutes"
+      readonly
+    />
+  </div>
+
+  <!-- Bouton de validation -->
+  <div class="flex justify-end mt-4">
+    <button
+      pButton
+      type="submit"
+      [disabled]="form.invalid || loading"
+      [label]="loading ? 'En cours...' : 'Valider le rendez-vous'"
+      [icon]="loading ? 'pi pi-spin pi-spinner' : 'pi pi-check'"
+      class="p-button-success"
+    ></button>
+  </div>
+
+
+</form>
+

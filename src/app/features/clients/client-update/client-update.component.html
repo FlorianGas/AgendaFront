@@ -1,0 +1,25 @@
+<div class="p-fluid">
+  <h2>Modifier un client</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div class="p-field">
+      <label for="first_name">Prénom</label>
+      <input id="first_name" pInputText formControlName="first_name" />
+    </div>
+
+    <div class="p-field">
+      <label for="last_name">Nom</label>
+      <input id="last_name" pInputText formControlName="last_name" />
+    </div>
+
+    <div class="p-field">
+      <label for="email">Email</label>
+      <input id="email" pInputText formControlName="email" />
+    </div>
+
+    <div class="p-mt-3 flex justify-end gap-2">
+      <button pButton type="button" label="Annuler" (click)="router.navigate(['/clients'])" class="p-button-text"></button>
+      <button pButton type="submit" label="Enregistrer" [loading]="loading" [disabled]="form.invalid"></button>
+    </div>
+  </form>
+</div>

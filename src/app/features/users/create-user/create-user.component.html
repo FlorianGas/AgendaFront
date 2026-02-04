@@ -1,0 +1,103 @@
+<div class="body">
+<div class="create-container">
+  <form [formGroup]="form" (ngSubmit)="submit()">
+    <h2>Créer un compte</h2>
+
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="first_name">Prénom</label>
+        <input pInputText id="first_name" formControlName="first_name" placeholder="Prénom" />
+        <p-message *ngIf="form.get('first_name')?.invalid && form.get('first_name')?.touched" severity="error" text="Champ requis"></p-message>
+      </div>
+
+      <div class="p-field">
+        <label for="last_name">Nom</label>
+        <input pInputText id="last_name" formControlName="last_name" placeholder="Nom" />
+        <p-message *ngIf="form.get('last_name')?.invalid && form.get('last_name')?.touched" severity="error" text="Champ requis"></p-message>
+      </div>
+
+      <div class="p-field">
+        <label for="email">Email</label>
+        <input pInputText id="email" formControlName="email" placeholder="Adresse e-mail" />
+        <p-message *ngIf="form.get('email')?.invalid && form.get('email')?.touched" severity="error" text="Champ requis"></p-message>
+      </div>
+
+      <div class="p-field">
+        <label >Mot de passe</label>
+        <p-password formControlName="password" [feedback]="true" toggleMask inputId="password" placeholder="Mot de passe" styleClass="w-full" />
+        <p-message *ngIf="form.get('password')?.invalid && form.get('password')?.touched" severity="error" text="Champ requis"></p-message>
+      </div>
+
+      <div class="p-field">
+        <label for="phone_number">Téléphone</label>
+        <input pInputText id="phone_number" formControlName="phone_number" placeholder="Téléphone" />
+        <p-message *ngIf="form.get('phone_number')?.invalid && form.get('phone_number')?.touched" severity="error" text="Champ requis"></p-message>
+      </div>
+
+      <div class="p-field">
+        <label for="role">Rôle</label>
+        <p-dropdown id="role" [options]="roleOptions" formControlName="role" placeholder="Sélectionnez un rôle" optionLabel="label" optionValue="value"></p-dropdown>
+        <p-message *ngIf="form.get('role')?.invalid && form.get('role')?.touched" severity="error" text="Champ requis"></p-message>
+      </div>
+
+
+
+
+      <!-- Champs spécifiques aux professionnels -->
+      <ng-container *ngIf="form.get('role')?.value === 'professional'">
+        <div class="p-field">
+          <label for="business_name">Nom de l'entreprise</label>
+          <input pInputText id="business_name" formControlName="business_name" placeholder="Nom de l'entreprise" />
+          <p-message *ngIf="form.get('business_name')?.invalid && form.get('business_name')?.touched" severity="error" text="Champ requis"></p-message>
+        </div>
+
+        <div class="p-field">
+          <label for="specialization">Spécialisation</label>
+          <input pInputText id="specialization" formControlName="specialization" placeholder="Spécialisation" />
+          <p-message *ngIf="form.get('specialization')?.invalid && form.get('specialization')?.touched" severity="error" text="Champ requis"></p-message>
+        </div>
+
+        <div class="p-field">
+          <label for="tax_number">Numéro fiscal</label>
+          <input pInputText id="tax_number" formControlName="tax_number" placeholder="Numéro fiscal" />
+          <p-message *ngIf="form.get('tax_number')?.invalid && form.get('tax_number')?.touched" severity="error" text="Champ requis"></p-message>
+        </div>
+      </ng-container>
+      <p-button
+        label="Encoder une adresse"
+        icon="pi pi-plus"
+        (onClick)="showAddress = true"
+        *ngIf="!showAddress"
+        class="mb-3" [rounded]="true" severity="info"
+      />
+
+      <div *ngIf="showAddress" formGroupName="address" class="grid">
+        <div class="p-field col-12 md:col-6">
+          <label for="street">Rue  : </label>
+          <input id="street" type="text" pInputText formControlName="street" />
+        </div>
+
+        <div class="p-field col-12 md:col-6">
+          <label for="postal_code">Code postal  : </label>
+          <input id="postal_code" type="text" pInputText formControlName="postal_code" />
+        </div>
+
+        <div class="p-field col-12 md:col-6">
+          <label for="city">Ville  : </label>
+          <input id="city" type="text" pInputText formControlName="city" />
+        </div>
+
+        <div class="p-field col-12 md:col-6">
+          <label for="country">Pays  : </label>
+          <input id="country" type="text" pInputText formControlName="country" />
+        </div>
+      </div>
+      <div class="button-group">
+        <button pButton label="Retour" class="p-button-secondary border-round-xl" (click)="BackToLogin()"></button>
+        <button pButton type="submit" label="Créer le compte" class="p-button-primary border-round-xl" [disabled]="form.invalid"></button>
+      </div>
+
+    </div>
+  </form>
+</div>
+</div>

@@ -1,0 +1,157 @@
+.appointments-container {
+  width: 80%;
+  margin: 1rem 1rem 1rem auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+  }
+
+  .filters {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+
+    input,
+    select {
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 0.95rem;
+      flex: 1;
+    }
+  }
+
+  .appointments-table {
+    width: 100%;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f9f9f9;
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background-color: #f1f7ff;
+    }
+
+    .btn-view {
+      padding: 0.4rem 0.8rem;
+      background-color: #006eff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.85rem;
+
+      &:hover {
+        background-color: #0056cc;
+      }
+    }
+
+    .status-chip {
+      display: inline-block;
+      padding: 0.25rem 0.6rem;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: capitalize;
+
+      &.confirmed {
+        background-color: #e0f7fa;
+        color: #00796b;
+      }
+
+      &.cancelled {
+        background-color: #ffebee;
+        color: #c62828;
+      }
+
+      &.completed {
+        background-color: #e8f5e9;
+        color: #2e7d32;
+      }
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: #777;
+  }
+}
+@media (max-width: 1024px) {
+  .appointments-container {
+    width: 95%;
+    padding: 1rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .filters {
+      flex-direction: column;
+      gap: 0.75rem;
+
+      input,
+      select {
+        width: 100%;
+      }
+    }
+
+    .appointments-table {
+      font-size: 0.9rem;
+
+      th,
+      td {
+        padding: 0.6rem;
+      }
+    }
+  }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .appointments-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0.75rem;
+
+    h2 {
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    .filters {
+      gap: 0.5rem;
+    }
+
+    .appointments-table {
+      font-size: 0.8rem;
+
+      th,
+      td {
+        padding: 0.4rem;
+      }
+
+      .btn-view {
+        padding: 0.3rem 0.6rem;
+        font-size: 0.75rem;
+      }
+    }
+  }
+}

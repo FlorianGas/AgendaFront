@@ -1,0 +1,79 @@
+<form *ngIf="appointmentForm" [formGroup]="appointmentForm" (ngSubmit)="onSubmit()" class="update-appointment-form">
+
+  <div class="field">
+    <label for="professional">Professionnel</label>
+    <input
+      id="professional"
+      type="text"
+      [value]="getProfessionalName()"
+      pInputText
+      readonly
+    />
+  </div>
+
+  <div class="field">
+    <label for="scheduled_time">Date & heure</label>
+    <p-calendar
+      inputId="scheduled_time"
+      formControlName="scheduled_time"
+      [showTime]="true"
+      dateFormat="dd/mm/yy"
+      [showIcon]="true"
+    ></p-calendar>
+  </div>
+
+  <div class="field">
+    <label for="duration_minutes">Durée (min)</label>
+    <input
+      id="duration_minutes"
+      type="text"
+      [value]="appointmentForm.get('duration_minutes')?.value"
+      pInputText
+      readonly
+    />
+  </div>
+
+  <div class="field">
+    <label for="client_id">Client</label>
+    <p-dropdown
+      inputId="client_id"
+      [options]="clients"
+      optionLabel="name"
+      optionValue="_id"
+      placeholder="Sélectionner un client"
+      formControlName="client_id"
+    ></p-dropdown>
+  </div>
+
+  <div class="field">
+    <label for="type_id">Type de prestation</label>
+    <p-dropdown
+      inputId="type_id"
+      [options]="appointmentTypes"
+      optionLabel="name"
+      optionValue="_id"
+      placeholder="Sélectionner un type"
+      formControlName="type_id"
+    ></p-dropdown>
+  </div>
+
+  <div class="field">
+    <label for="status">Statut</label>
+    <p-dropdown
+      inputId="status"
+      [options]="[
+        { label: 'Confirmé', value: 'confirmed' },
+        { label: 'Annulé', value: 'canceled' },
+        { label: 'En attente', value: 'pending' }
+      ]"
+      placeholder="Sélectionner un statut"
+      formControlName="status"
+    ></p-dropdown>
+  </div>
+
+  <div class="actions flex justify-content-end gap-2">
+    <button pButton type="button" label="Annuler" class="p-button-text" (click)="onCancel()"></button>
+    <button pButton type="submit" label="Enregistrer" class="p-button-primary" [disabled]="appointmentForm.invalid"></button>
+  </div>
+
+</form>

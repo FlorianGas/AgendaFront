@@ -1,0 +1,232 @@
+<div class="dashboard-client">
+  <h2>Tableau de bord</h2>
+  <div class="button-group mb-4">
+    <button pButton (click)="openCreateDialog()">Prendre un rendez-vous</button>
+  </div>
+
+  <div class="button-group mb-4">
+    <button pButton (click)="syncWithGoogleCalendar()">Synchroniser avec Google Calendar</button>
+  </div>
+
+  <!-- Prochain rendez-vous -->
+  <p-panel header="Prochain rendez-vous" [toggleable]="true" [collapsed]="false" class="custom-panel-header">
+    <ng-container *ngIf="nextAppointment; else noNext">
+      <div class="p-field"><label>Date :</label>
+        <p>{{ nextAppointment.scheduled_time | date:'fullDate' }} à {{ nextAppointment.scheduled_time | date:'shortTime' }}</p>
+      </div>
+      <div class="p-field"><label>Prestation :</label>
+        <p>{{ nextAppointment.type_id?.name }}</p>
+      </div>
+      <div class="p-field"><label>Durée :</label>
+        <p>{{ nextAppointment.duration_minutes }} minutes</p>
+      </div>
+      <div class="p-field"><label>Statut :</label>
+        <p>{{ nextAppointment.status | titlecase }}</p>
+      </div>
+    </ng-container>
+    <ng-template #noNext><p>Aucun rendez-vous à venir.</p></ng-template>
+  </p-panel>
+
+  <!-- Rendez-vous à venir -->
+  <p-panel header="Rendez-vous à venir" [toggleable]="true" class="custom-panel-header">
+    <ng-container *ngIf="upcomingAppointments.length; else noUpcoming">
+      <ul class="p-list">
+        <li *ngFor="let appt of upcomingAppointments">
+          <i class="pi pi-clock text-primary"></i>
+          <div class="flex-grow-1">
+            {{ appt.scheduled_time | date:'fullDate' }} à {{ appt.scheduled_time | date:'shortTime' }} –
+            {{ appt.type_id?.name }} ({{ appt.status | titlecase }})
+          </div>
+          <button pButton icon="pi pi-search" class="p-button-text p-button-sm" (click)="viewAppointment(appt)" label="Voir"></button>
+          <button pButton icon="pi pi-times" class="p-button-danger p-button-sm"
+                  (click)="confirmCancelAppointment(appt)"
+                  [disabled]="isCancelling || appt.status === 'canceled' || appt.status === 'completed'">
+            <ng-container *ngIf="isCancelling; else normalLabel"><i class="pi pi-spin pi-spinner"></i></ng-container>
+            <ng-template #normalLabel>Annuler</ng-template>
+          </button>
+        </li>
+      </ul>
+    </ng-container>
+    <ng-template #noUpcoming><p>Aucun rendez-vous à venir.</p></ng-template>
+  </p-panel>
+
+  <!-- Historique -->
+  <p-panel header="Historique des rendez-vous" [toggleable]="true" class="custom-panel-header">
+    <ng-container *ngIf="pastAppointments.length; else noPast">
+      <ul class="p-list">
+        <li *ngFor="let appt of pastAppointments">
+          <i class="pi pi-history text-secondary"></i>
+          {{ appt.scheduled_time | date:'fullDate' }} à {{ appt.scheduled_time | date:'shortTime' }} –
+          {{ appt.type_id?.name }} ({{ appt.status | titlecase }})
+        </li>
+      </ul>
+    </ng-container>
+    <ng-template #noPast><p>Aucun rendez-vous passé.</p></ng-template>
+  </p-panel>
+</div>
+
+<!-- Dialog Création / Modification -->
+<p-dialog
+  [(visible)]="dialogVisible"
+  [modal]="true"
+  [closable]="false"
+  [dismissableMask]="true"
+  [style]="{ width: '500px', minHeight: '700px' }"
+  header="Prendre un rendez-vous"
+  class="custom-dialog"
+>
+  <!-- Bouton fermeture -->
+  <div class="dialog-close-container">
+    <button
+      pButton icon="pi pi-times"
+      class="p-button-rounded p-button-sm dialog-close-button"
+      (click)="dialogVisible = false"
+    ></button>
+  </div>
+
+  <form [formGroup]="appointmentForm" class="p-fluid p-formgrid">
+    <!-- Professionnel -->
+    <div class="p-field p-col-12 mb-3">
+      <label>Professionnel</label>
+      <p-dropdown
+        formControlName="professional_id"
+        [options]="professionals"
+        optionLabel="label"
+        optionValue="_id"
+        placeholder="Sélectionner un professionnel"
+        (onChange)="onProfessionalChange()"
+        class="w-full"
+      ></p-dropdown>
+    </div>
+
+    <!-- Prestation -->
+    <div class="p-field p-col-12 mb-3">
+      <label>Prestation</label>
+      <p-dropdown
+        formControlName="type_id"
+        [options]="appointmentTypes"
+        optionLabel="name"
+        optionValue="_id"
+        placeholder="Sélectionner une prestation"
+        (onChange)="onTypeChange()"
+        class="w-full"
+      ></p-dropdown>
+    </div>
+
+    <!-- Date -->
+    <div class="p-field p-col-12 mb-3">
+      <label>Date</label>
+      <p-calendar
+        formControlName="selected_date"
+        [minDate]="minDate"
+        dateFormat="dd/mm/yy"
+        [showIcon]="true"
+        (onSelect)="onDateSelected()"
+        placeholder="Choisir une date"
+        class="w-full"
+      ></p-calendar>
+    </div>
+
+    <!-- Créneaux disponibles -->
+    <div class="p-field p-col-12" *ngIf="availableSlots.length">
+      <label>Créneaux disponibles</label>
+      <div class="grid grid-cols-3 gap-2 mt-2">
+        <button
+          *ngFor="let slot of availableSlots"
+          type="button"
+          pButton
+          [label]="slot.label"
+          [class.p-button-success]="appointmentForm.value.scheduled_time === slot.iso"
+          [class.p-button-outlined]="appointmentForm.value.scheduled_time !== slot.iso"
+          [class.selected-slot]="appointmentForm.value.scheduled_time === slot.iso"
+          (click)="selectSlot(slot.value, slot.iso)"
+        ></button>
+
+      </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="p-col-12 flex justify-end gap-2 mt-4">
+      <button
+        pButton
+        label="Annuler"
+        class="p-button-text"
+        (click)="dialogVisible = false"
+      ></button>
+      <button
+        pButton
+        label="Valider"
+        [disabled]="appointmentForm.invalid"
+        class="p-button-success"
+        (click)="saveAppointment()"
+      ></button>
+    </div>
+  </form>
+</p-dialog>
+
+
+<!-- 🕒 Dialog Détail du rendez-vous -->
+<p-dialog
+  [(visible)]="viewDialogVisible"
+  [modal]="true"
+  [closable]="false"
+  [dismissableMask]="true"
+  header="Détails du rendez-vous"
+  class="custom-dialog"
+  (onHide)="closeViewDialog()"
+>
+  <!-- Bouton fermeture -->
+  <div class="dialog-close-container">
+    <button
+      pButton icon="pi pi-times"
+      class="p-button-rounded p-button-sm dialog-close-button"
+      (click)="closeViewDialog()"
+    ></button>
+  </div>
+
+  <ng-container *ngIf="selectedAppointment; else noDetails">
+    <div class="p-fluid">
+      <div class="p-field">
+        <label>Date</label>
+        <p>{{ selectedAppointment.scheduled_time | date:'fullDate' }} à {{ selectedAppointment.scheduled_time | date:'shortTime' }}</p>
+      </div>
+
+      <div class="p-field">
+        <label>Prestation</label>
+        <p>{{ selectedAppointment.type_id?.name }}</p>
+      </div>
+
+      <div class="p-field">
+        <label>Durée</label>
+        <p>{{ selectedAppointment.duration_minutes }} minutes</p>
+      </div>
+
+      <div class="p-field">
+        <label>Statut</label>
+        <p>{{ selectedAppointment.status | titlecase }}</p>
+      </div>
+    </div>
+
+    <div class="p-dialog-footer mt-2 flex justify-end gap-2">
+      <button
+        pButton
+        label="Annuler le rendez-vous"
+        class="p-button-danger"
+        (click)="confirmCancelAppointment(selectedAppointment!)"
+        [disabled]="isCancelling || selectedAppointment.status === 'canceled' || selectedAppointment.status === 'completed'"
+      ></button>
+      <button
+        pButton
+        label="Fermer"
+        class="p-button-text"
+        (click)="closeViewDialog()"
+      ></button>
+    </div>
+  </ng-container>
+
+  <ng-template #noDetails>
+    <p>Aucun détail à afficher.</p>
+  </ng-template>
+</p-dialog>
+
+<p-confirmDialog></p-confirmDialog>

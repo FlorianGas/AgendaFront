@@ -1,0 +1,90 @@
+.navbar {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+// TOPBAR (bande supérieure)
+.topbar {
+  display: flex;
+  position: fixed;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  background: #26a69a; // teal plus doux
+  color: white;
+  padding: 0.5rem 1rem;
+  height: 60px;
+  top: 0;
+  left: 0;
+  z-index: 10;
+
+  .title {
+    font-size: 1.8rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-align: right;
+    margin-left: 1rem;
+  }
+  .logo-wrapper {
+    display: flex;
+    justify-content: right;
+
+  }
+
+  .logout {
+    display: flex;
+
+  }
+}
+
+// BOUTONS
+::ng-deep .p-button {
+  background-color: #2c3e50 !important;
+  color: #fff !important;
+  border: none !important;
+  transition: background-color 0.3s ease;
+  justify-content: right;
+}
+
+::ng-deep .p-button:hover {
+  background-color: #34495e !important;
+}
+
+// SIDEBAR
+.sidebar {
+  position: fixed;
+  top: 60px;
+  left: 0;
+  width: 240px;
+  height: calc(100vh - 60px);
+  background: #e0f2f1; // vert clair doux
+  padding: 1rem;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.05);
+  overflow-y: auto;
+  transition: all 0.3s ease;
+
+  a {
+    color: #004d40;
+    font-weight: 500;
+    display: block;
+    padding: 0.5rem 0;
+    text-decoration: none;
+
+    &:hover {
+      color: #00796b;
+    }
+  }
+}
+
+// CONTENU PRINCIPAL
+.content {
+  margin-left: 240px;
+  margin-top: 60px;
+  padding: 2rem;
+  background: #fefefe;
+  flex: 1;
+  min-height: calc(100vh - 60px);
+  overflow-y: auto;
+  transition: all 0.3s ease;
+}

@@ -1,0 +1,30 @@
+<form [formGroup]="batchForm" (ngSubmit)="generateAndSubmitSlots()" class="p-fluid p-4 availability-batch-form">
+  <div class="p-field mb-3">
+    <label for="start_date">Date de début</label>
+    <p-calendar formControlName="start_date" inputId="start_date" dateFormat="dd.mm.yy"  ></p-calendar>
+  </div>
+
+  <div class="p-field mb-3">
+    <label for="end_date">Date de fin</label>
+    <p-calendar formControlName="end_date" inputId="end_date" dateFormat="dd.mm.yy"></p-calendar>
+  </div>
+
+  <div class="p-field mb-3">
+    <label for="start_hour">Heure de début quotidienne</label>
+    <input pInputText type="time" id="start_hour" formControlName="start_hour" />
+  </div>
+
+  <div class="p-field mb-3">
+    <label for="end_hour">Heure de fin quotidienne</label>
+    <input pInputText type="time" id="end_hour" formControlName="end_hour" />
+  </div>
+
+  <div class="p-field mb-3">
+    <label for="duration">Durée des créneaux (minutes)</label>
+    <input pInputText type="number" id="duration" formControlName="duration" />
+  </div>
+
+  <div class="flex justify-end mt-3">
+    <button pButton type="submit" label="Générer les disponibilités" class="p-button-success" [disabled]="batchForm.invalid"></button>
+  </div>
+</form>

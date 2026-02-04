@@ -1,0 +1,41 @@
+<div class="layout">
+  <!-- Barre de navigation horizontale -->
+  <div class="topbar">
+    <div class="logo-wrapper">
+      <!-- Bouton menu visible uniquement sur mobile -->
+      <span class="menu-toggle" (click)="toggleSidebar()">☰</span>
+
+      <img ngSrc="../../../../assets/img/logo.png" alt="Logo" width="50" height="50" />
+      <span class="title">AgendApp</span>
+    </div>
+
+    <div class="Logout">
+      <button pButton icon="pi pi-sign-out" class="p-button-rounded p-button-sm" label="Déconnexion" *ngIf="!isMobile" (click)="onLogout()"></button>
+      <button pButton icon="pi pi-sign-out" class="p-button-rounded p-button-sm" *ngIf="isMobile" title="Déconnexion" (click)="onLogout()"></button>
+    </div>
+    <!--<div class="theme-toggle flex align-items-center gap-2" style="margin-right: 1rem;">
+      <i class="pi" [ngClass]="isDarkMode ? 'pi-moon' : 'pi-sun'" style="font-size: 1.2rem;"></i>
+      <p-inputSwitch [ngModel]="isDarkMode" (onChange)="toggleTheme()"></p-inputSwitch>
+    </div>!-->
+
+  </div>
+
+  <!-- Sidebar avec classe dynamique -->
+  <nav class="sidebar" [ngClass]="{ open: sidebarOpen }">
+    <a routerLink="/dashboard" (click)="onNavigate()">Accueil</a>
+
+    <ng-container *ngIf="isClient">
+      <a routerLink="/appointments/pro/me" (click)="onNavigate()">Mes rendez-vous</a>
+    </ng-container>
+
+    <ng-container *ngIf="isProfessional">
+      <a routerLink="/types" (click)="onNavigate()">Prestations</a>
+      <a routerLink="/appointments/pro/me" (click)="onNavigate()">Mes rendez-vous</a>
+      <a routerLink="/availability" (click)="onNavigate()">Disponibilités</a>
+      <a routerLink="/clients" (click)="onNavigate()">Mes clients</a>
+        <a routerLink="/stat" (click)="onNavigate()">Statistiques</a>
+    </ng-container>
+
+    <a routerLink="/user/me" (click)="onNavigate()">Mon profil</a>
+  </nav>
+</div>

@@ -1,0 +1,51 @@
+<p-panel header="Mes notifications" class="custom-panel-notifs">
+  <div class="header-actions p-d-flex p-jc-between p-ai-center p-mb-3">
+    <h2 class="p-m-0">Notifications</h2>
+    <button
+      pButton
+      type="button"
+      icon="pi pi-trash"
+      label="Tout effacer"
+      class="p-button-text p-button-danger"
+      (click)="clearAll()"
+      [disabled]="!notifications.length"
+    ></button>
+  </div>
+
+  <p-scrollPanel [style.height]="'80vh'" class="p-mt-2">
+    <ng-container *ngIf="notifications.length > 0; else noNotif">
+      <div class="notif-list p-grid p-dir-col p-gap-3">
+        <p-card
+          *ngFor="let n of notifications"
+          class="notif-card"
+          (click)="markAsRead(n)"
+          [ngClass]="{ 'unread': n.status === 'sent' }"
+        >
+          <ng-template pTemplate="header">
+            <div class="card-header p-d-flex p-jc-between p-ai-center">
+              <i
+                class="pi"
+                [ngClass]="{
+                  'pi-bell': n.type === 'created',
+                  'pi-pencil': n.type === 'updated',
+                  'pi-times-circle': n.type === 'canceled'
+                }"
+                aria-hidden="true"
+              ></i>
+              <span class="type">{{ n.type | titlecase }}</span>
+              <span class="time">{{ n.sent_at | date: 'short' }}</span>
+            </div>
+          </ng-template>
+
+          <div class="message p-mt-2">{{ n.message }}</div>
+        </p-card>
+      </div>
+    </ng-container>
+  </p-scrollPanel>
+
+  <ng-template #noNotif>
+    <div class="empty-state p-text-center p-mt-5 p-text-secondary">
+      Aucune notification pour le moment.
+    </div>
+  </ng-template>
+</p-panel>

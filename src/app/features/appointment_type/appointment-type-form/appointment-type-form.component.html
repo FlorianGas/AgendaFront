@@ -1,0 +1,65 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="form-container p-fluid">
+
+  <!-- Nom -->
+  <div class="p-field">
+    <label for="name">Nom *</label>
+    <input id="name" type="text" pInputText formControlName="name" />
+    <small *ngIf="form.get('name')?.touched && form.get('name')?.invalid" class="p-error">
+      Le nom est requis
+    </small>
+  </div>
+
+  <!-- Durée -->
+  <div class="p-field">
+    <label for="default_duration">Durée (minutes) *</label>
+    <input id="default_duration" type="number" pInputText formControlName="default_duration" />
+    <small *ngIf="form.get('default_duration')?.touched && form.get('default_duration')?.invalid" class="p-error">
+      Durée invalide
+    </small>
+  </div>
+
+  <!-- Prix -->
+  <div class="p-field">
+    <label for="price">Prix (€)</label>
+    <input id="price" type="number" pInputText formControlName="price" />
+    <small *ngIf="form.get('price')?.touched && form.get('price')?.invalid" class="p-error">
+      Prix invalide
+    </small>
+  </div>
+
+  <!-- Couleur -->
+  <div class="p-field">
+    <label for="color">Couleur</label><br />
+    <p-colorPicker
+      id="color"
+      formControlName="color"
+      [style]="{ width: '3rem', height: '2rem' }"
+      [format]="'hex'"
+    ></p-colorPicker>
+    <small *ngIf="form.get('color')?.touched && form.get('color')?.invalid" class="p-error">
+      La couleur est requise.
+    </small>
+  </div>
+  <!-- Autoriser les doubles RDV -->
+  <div class="p-field">
+    <label for="allowMultipleBookings">Autoriser les doubles RDV</label>
+    <p-checkbox
+      id="allowMultipleBookings"
+      formControlName="allowMultipleBookings"
+      binary="true"
+      [trueValue]="true"
+      [falseValue]="false"
+    ></p-checkbox>
+  </div>
+  <!-- Description -->
+  <div class="p-field">
+    <label for="description">Description</label>
+    <input id="description" type="text" pInputText formControlName="description" />
+  </div>
+
+  <!-- Boutons -->
+  <div class="form-actions">
+    <button type="button" pButton label="Annuler" class="p-button-secondary" (click)="router.navigate(['/types'])"></button>
+    <button pButton type="submit" label="Enregistrer" class="p-button-primary" [disabled]="form.invalid"></button>
+  </div>
+</form>

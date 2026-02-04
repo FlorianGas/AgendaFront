@@ -1,0 +1,79 @@
+<div class="dashboard-pro-stats">
+
+  <!-- Filtres -->
+  <div class="filters">
+    <p-calendar
+      [(ngModel)]="startDate"
+      placeholder="Date début"
+      dateFormat="dd/mm/yy"
+      (onSelect)="filterData()">
+    </p-calendar>
+
+    <p-calendar
+      [(ngModel)]="endDate"
+      placeholder="Date fin"
+      dateFormat="dd/mm/yy"
+      (onSelect)="filterData()">
+    </p-calendar>
+
+
+    <p-dropdown
+      [options]="statusOptions"
+      placeholder="Statut"
+      [(ngModel)]="selectedStatus"
+      (onChange)="filterData()">
+    </p-dropdown>
+  </div>
+
+  <!-- Grille des charts -->
+  <div class="charts-grid">
+
+    <!-- Chart 1 -->
+    <div class="chart-container">
+      <p-chart
+        type="bar"
+        [data]="chartData"
+        [options]="chartOptions"
+        *ngIf="chartData && chartData.datasets.length > 0">
+      </p-chart>
+      <p *ngIf="!chartData || chartData.datasets[0].data.length === 0">
+        Aucun rendez-vous trouvé pour les filtres sélectionnés.
+      </p>
+    </div>
+
+    <div class="chart-container">
+      <p-chart
+        type="line"
+        [data]="chartData"
+        [options]="chartOptions"
+        *ngIf="chartData && chartData.datasets.length > 0">
+      </p-chart>
+      <p *ngIf="!chartData || chartData.datasets[0].data.length === 0">
+        Aucun rendez-vous trouvé pour les filtres sélectionnés.
+      </p>
+    </div>
+
+    <div class="chart-container">
+      <p-chart
+        type="doughnut"
+        [data]="chartData"
+        [options]="chartOptions"
+        *ngIf="chartData && chartData.datasets.length > 0">
+      </p-chart>
+      <p *ngIf="!chartData || chartData.datasets[0].data.length === 0">
+        Aucun rendez-vous trouvé pour les filtres sélectionnés.
+      </p>
+    </div>
+    <div class="chart-container">
+      <p-chart
+        type="pie"
+        [data]="chartData"
+        [options]="chartOptions"
+        *ngIf="chartData && chartData.datasets.length > 0">
+      </p-chart>
+      <p *ngIf="!chartData || chartData.datasets[0].data.length === 0">
+        Aucun rendez-vous trouvé pour les filtres sélectionnés.
+      </p>
+
+  </div>
+</div>

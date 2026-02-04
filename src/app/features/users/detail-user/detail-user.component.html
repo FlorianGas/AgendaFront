@@ -1,0 +1,112 @@
+
+<div class="profile-container" *ngIf="!loading; else loadingTpl">
+  <h2>Mon profil ({{ role }})</h2>
+
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="p-fluid p-formgrid p-grid">
+    <!-- Champs communs -->
+    <div class="p-field p-col-12 p-md-6">
+      <label for="first_name">Prénom</label>
+      <input id="first_name" pInputText formControlName="first_name" />
+    </div>
+
+    <div class="p-field p-col-12 p-md-6">
+      <label for="last_name">Nom</label>
+      <input id="last_name" pInputText formControlName="last_name" />
+    </div>
+
+    <div class="p-field p-col-12">
+      <label for="email">Email</label>
+      <input id="email" pInputText formControlName="email" [disabled]="false" />
+    </div>
+    <div class="p-field p-col-12">
+      <label for="password">Password (encodage du nouveau password)</label>
+      <input id="password" pInputText type="password" formControlName="password"  />
+    </div>
+    <div class="p-field p-col-12 p-md-6">
+      <label for="phone_number">Téléphone</label>
+      <input id="phone_number" pInputText formControlName="phone_number" />
+    </div>
+
+    <!-- Groupe adresse -->
+    <div formGroupName="address">
+      <div class="p-field p-col-12 p-md-6">
+        <label for="street">Rue</label>
+        <input id="street" pInputText formControlName="street" />
+      </div>
+
+      <div class="p-field p-col-12 p-md-6">
+        <label for="postal_code">Code postal</label>
+        <input id="postal_code" pInputText formControlName="postal_code" />
+      </div>
+
+      <div class="p-field p-col-12 p-md-6">
+        <label for="city">Ville</label>
+        <input id="city" pInputText formControlName="city" />
+      </div>
+
+      <div class="p-field p-col-12 p-md-6">
+        <label for="country">Pays</label>
+        <input id="country" pInputText formControlName="country" />
+      </div>
+    </div>
+
+    <!-- Section Professional -->
+    <!--<pre *ngIf="role==='professional'">{{ professional | json }}</pre>-->
+    <ng-container *ngIf="role === 'professional'" formGroupName="professional">
+      <div class="p-field p-col-12 p-md-6">
+        <label for="business_name">Nom de l’entreprise</label>
+        <input id="business_name" pInputText formControlName="business_name" />
+      </div>
+
+      <div class="p-field p-col-12 p-md-6">
+        <label for="specialization">Spécialisation</label>
+        <input id="specialization" pInputText formControlName="specialization" />
+      </div>
+
+      <div class="p-field p-col-12 p-md-6">
+        <label for="tax_number">Numéro de TVA</label>
+        <input id="tax_number" pInputText formControlName="tax_number" />
+      </div>
+
+      <div class="p-field p-col-12 p-md-6">
+        <label for="business_address">Adresse professionnelle</label>
+        <input id="business_address" pInputText formControlName="business_address" />
+      </div>
+
+      <div class="p-field p-col-12 p-md-6">
+        <label for="professional_phone">Téléphone pro</label>
+        <input id="professional_phone" pInputText formControlName="phone_number" />
+      </div>
+
+
+    </ng-container>
+
+    <!-- Section Client -->
+    <ng-container *ngIf="role === 'client'" formGroupName="client">
+      <div class="p-field p-col-12 p-md-6">
+        <label for="preferences">Préférences</label>
+        <input id="preferences" pInputText formControlName="preferences" />
+      </div>
+
+      <div class="p-field p-col-12 p-md-6">
+        <label for="is_active">Actif ?</label>
+        <input id="is_active" type="checkbox" formControlName="is_active" />
+      </div>
+    </ng-container>
+
+    <!-- Bouton de soumission -->
+    <div class="p-col-12">
+      <button
+        pButton
+        type="submit"
+        label="Mettre à jour"
+        [disabled]="form.invalid"
+        class="p-button-success mt-2 w-full"
+      ></button>
+    </div>
+  </form>
+</div>
+
+<ng-template #loadingTpl>
+  <p-progress-spinner styleClass="center-spinner"></p-progress-spinner>
+</ng-template>

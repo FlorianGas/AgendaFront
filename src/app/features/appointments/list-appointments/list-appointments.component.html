@@ -1,0 +1,61 @@
+<div class="appointments-container">
+  <h2>Mes rendez-vous</h2>
+
+  <!-- Filtres -->
+  <div class="filters">
+    <input type="date" [formControl]="dateFilter" placeholder="Filtrer par date" />
+    <input type="text" [formControl]="personFilter" placeholder="Filtrer par {{ userRole === 'professional' ? 'client' : 'professionnel' }}" />
+    <select [formControl]="statusFilter">
+      <option value="">Tous les statuts</option>
+      <option value="confirmed">Confirmé</option>
+      <option value="canceled">Annulé</option>
+      <option value="completed">Terminé</option>
+      <option value="pending">En attente</option>
+    </select>
+  </div>
+
+  <!-- Tableau des rendez-vous -->
+  <table class="appointments-table">
+    <thead>
+    <tr>
+      <th>Date</th>
+      <th>Heure</th>
+      <th>{{ userRole === 'professional' ? 'Client' : 'Professionnel' }}</th>
+      <th>Statut</th>
+      <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let a of filteredAppointments">
+      <td>{{ a.scheduled_time | date: 'shortDate' }}</td>
+      <td>{{ a.scheduled_time | date: 'shortTime' }}</td>
+
+      <!-- Nom dynamique selon le rôle -->
+      <td>
+        <ng-container *ngIf="userRole === 'professional'">
+          <td>{{ getPersonName(a) }}</td>
+        </ng-container>
+        <ng-container *ngIf="userRole === 'client'">
+          <td>{{ getPersonName(a) }}</td>
+        </ng-container>
+      </td>
+
+      <!-- Statut -->
+      <td>
+          <span [ngClass]="'status-chip ' + a.status">
+            {{ a.status | titlecase }}
+          </span>
+      </td>
+
+      <td>
+        <button class="btn-view">Voir</button>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+
+  <!-- Aucun rendez-vous -->
+  <div *ngIf="filteredAppointments.length === 0" class="empty-state">
+    Aucun rendez-vous trouvé.
+  </div>
+</div>

@@ -1,0 +1,192 @@
+.clients-container {
+  width: 80%;
+  margin: 1rem 1rem 1rem auto;
+  padding: 1rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+
+  h2 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: pink;
+  }
+
+  .table-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+
+    .search-input {
+      width: 100%;
+      max-width: 300px;
+    }
+
+    button {
+      white-space: nowrap;
+    }
+    .create-button {
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+
+
+  .table-filters {
+    margin-bottom: 1rem;
+
+    input {
+      width: 100%;
+      max-width: 300px;
+      padding: 0.5rem 0.75rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 0.95rem;
+    }
+  }
+
+  .p-table,
+  .p-datatable {
+    width: 100%;
+    font-size: 1rem;
+    border-collapse: collapse;
+
+    th,
+    td {
+      padding: 0.75rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+
+    th {
+      background-color: #f9f9f9;
+      font-weight: 500;
+    }
+
+    tr:hover {
+      background-color: #f1f7ff;
+    }
+
+    .p-button {
+      font-size: 0.85rem;
+    }
+  }
+
+  .empty-state {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 1rem;
+    color: #777;
+  }
+
+  .p-dialog {
+    border-radius: 8px;
+  }
+
+  .p-field {
+    margin-bottom: 1rem;
+
+    label {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+      display: block;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 0.5rem;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+  }
+
+  .dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+  }
+}
+
+/* TABLETTE */
+@media (max-width: 1024px) {
+  .clients-container {
+    width: 95%;
+    padding: 1rem;
+
+    h2 {
+      font-size: 1.5rem;
+    }
+
+    .create-button {
+      justify-content: center;
+    }
+
+    .p-table,
+    .p-datatable {
+      font-size: 0.95rem;
+
+      th,
+      td {
+        padding: 0.6rem;
+      }
+    }
+  }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  .clients-container {
+    width: 100%;
+    padding: 0.75rem;
+
+    h2 {
+      font-size: 1.3rem;
+      text-align: center;
+    }
+
+    .create-button {
+      flex-direction: column;
+      align-items: center;
+
+      button {
+        width: 100%;
+        margin: 0.5rem 0;
+      }
+    }
+
+    .table-filters {
+      input {
+        width: 100%;
+      }
+    }
+
+    .p-table,
+    .p-datatable {
+      font-size: 0.85rem;
+
+      th,
+      td {
+        padding: 0.5rem;
+      }
+
+      .p-button {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+    .dialog-actions {
+      flex-direction: column;
+      align-items: stretch;
+
+      button {
+        width: 100%;
+      }
+    }
+  }
+}

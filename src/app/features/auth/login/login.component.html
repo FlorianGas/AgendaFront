@@ -1,0 +1,28 @@
+<div class="login-container">
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <div class="logo-wrapper">
+      <img ngSrc="../../../../assets/img/logo.png" alt="Logo" width="120" height="120" />
+    </div>
+    <h2>Connexion</h2>
+    <div class="p-fluid">
+      <div class="p-field">
+        <label for="email">Email</label>
+        <input id="email" pInputText formControlName="email" type="email" placeholder="Entrez votre email" />
+      </div>
+
+      <div class="p-field">
+        <label for="password">Mot de passe</label>
+        <input pPassword id="password" [feedback]="false"  formControlName="password" type="password" placeholder="Mot de passe"/>
+      </div>
+
+      <p *ngIf="errorMessage" class="p-error" style="margin-top: 10px">
+        {{ errorMessage }}
+      </p>
+
+      <div class="button-group    " >
+        <button pButton type="button" label="S'enregistrer" class="p-button-secondary border-round-2xl" (click)="onRegister()"></button>
+        <button pButton type="submit" label="Se connecter" class="p-button-primary border-round-2xl" ></button>
+      </div>
+    </div>
+  </form>
+</div>

@@ -1,0 +1,126 @@
+<div class="clients-container p-fluid">
+  <!-- Bouton création -->
+  <h2>Liste des clients</h2>
+
+
+  <!-- Tableau -->
+  <p-table
+    #table
+    [value]="clients"
+    [paginator]="true"
+    [rows]="10"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    [globalFilterFields]="['user_id.first_name', 'user_id.last_name', 'user_id.email']"
+    [responsiveLayout]="'scroll'"
+    [showCurrentPageReport]="true"
+    currentPageReportTemplate="Affichage de {first} à {last} sur {totalRecords} clients"
+  >
+    <ng-template pTemplate="caption">
+      <div *ngIf="clients.length > 0" class="table-toolbar flex align-items-center justify-between mb-3">
+        <input
+          pInputText
+          type="text"
+          placeholder="Rechercher nom, prénom ou email"
+          (input)="onGlobalSearch($event)"
+          class="p-inputtext-sm search-input"
+        />
+        <button
+          pButton
+          type="button"
+          label="Nouveau client"
+          icon="pi pi-plus"
+          class="p-button-primary"
+          (click)="onNew()"
+        ></button>
+      </div>
+    </ng-template>
+
+
+    <!-- En-têtes -->
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Prénom</th>
+        <th>Nom</th>
+        <th>Email</th>
+        <th>Téléphone</th>
+        <th class="text-center">Actions</th>
+      </tr>
+    </ng-template>
+
+    <!-- Corps du tableau -->
+    <ng-template pTemplate="body" let-client>
+      <tr *ngIf="client?.user_id">
+        <td>{{ client.user_id.first_name }}</td>
+        <td>{{ client.user_id.last_name }}</td>
+        <td>{{ client.user_id.email }}</td>
+        <td>{{ client.user_id.phone_number }}</td>
+        <td class="text-center">
+          <button
+            pButton
+            type="button"
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-text"
+            (click)="onEdit(client)"
+          ></button>
+          <button
+            pButton
+            type="button"
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-text p-button-danger"
+            (click)="onDelete(client)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <!-- Dialog de création / édition -->
+  <p-dialog
+    [(visible)]="dialogVisible"
+    [modal]="true"
+    [closable]="false"
+    [style]="{ width: '400px' }"
+    header="{{ isEditing ? 'Modifier' : 'Créer' }} un client"
+  >
+    <form [formGroup]="form" (ngSubmit)="onSave()" class="p-fluid">
+      <div class="p-field">
+        <label for="first_name">Prénom</label>
+        <input id="first_name" pInputText formControlName="first_name" placeholder="Ex: Jean" />
+      </div>
+
+      <div class="p-field">
+        <label for="last_name">Nom</label>
+        <input id="last_name" pInputText formControlName="last_name" placeholder="Ex: Dupont" />
+      </div>
+
+      <div class="p-field">
+        <label for="email">Email</label>
+        <input id="email" pInputText formControlName="email" placeholder="Ex: jean@email.com" />
+      </div>
+
+      <div class="p-field">
+        <label for="phone_number">Téléphone</label>
+        <input id="phone_number" pInputText formControlName="phone_number" placeholder="Ex: 0478706714" />
+      </div>
+
+      <div class="dialog-actions flex justify-end mt-3">
+        <button
+          pButton
+          type="button"
+          label="Annuler"
+          icon="pi pi-times"
+          class="p-button-text"
+          (click)="dialogVisible = false"
+        ></button>
+        <button
+          pButton
+          type="submit"
+          [disabled]="form.invalid"
+          [loading]="loading"
+          label="{{ isEditing ? 'Mettre à jour' : 'Créer' }}"
+          icon="pi pi-check"
+        ></button>
+      </div>
+    </form>
+  </p-dialog>
+</div>

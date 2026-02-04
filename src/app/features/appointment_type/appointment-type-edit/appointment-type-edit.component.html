@@ -1,0 +1,64 @@
+<form [formGroup]="form" (ngSubmit)="submit()" class="p-fluid">
+  <div *ngIf="loading" class="loading-overlay">
+    Chargement…
+  </div>
+
+  <div class="p-field">
+    <label for="name">Nom</label> <br>
+    <input id="name" pInputText formControlName="name" />
+    <small *ngIf="form.get('name')?.touched && form.get('name')?.invalid" class="p-error">
+      Le nom est requis
+    </small>
+  </div>
+
+  <div class="p-field">
+    <label for="default_duration">Durée par défaut (minutes)</label> <br>
+    <input id="default_duration" type="number" pInputText formControlName="default_duration" />
+    <small *ngIf="form.get('default_duration')?.touched && form.get('default_duration')?.invalid" class="p-error">
+      Durée invalide
+    </small>
+  </div>
+
+  <div class="p-field">
+    <label for="price">Prix (€)</label> <br>
+    <p-inputNumber
+      id="price"
+      formControlName="price"
+      mode="decimal"
+      [minFractionDigits]="2"
+      [maxFractionDigits]="2"
+      [min]="0"
+    ></p-inputNumber>
+
+    <small *ngIf="form.get('price')?.touched && form.get('price')?.invalid" class="p-error">
+      Prix invalide
+    </small>
+  </div>
+  <div class="p-field">
+    <label for="color">Couleur</label>
+    <p-colorPicker
+      id="color"
+      formControlName="color"
+      [style]="{width: '3rem', height: '2rem'}"
+      [format]="'hex'"
+    ></p-colorPicker>
+
+  </div>
+  <div class="p-field">
+    <label for="allowMultipleBookings">Autoriser les doubles RDV</label>
+    <p-checkbox
+      id="allowMultipleBookings"
+      formControlName="allowMultipleBookings"
+      binary="true"
+      [trueValue]="true"
+      [falseValue]="false"
+    ></p-checkbox>
+  </div>
+  <div class="p-field">
+    <label for="description">Description</label> <br>
+    <input id="description" pInputText formControlName="description" />
+  </div>
+
+  <button type="submit" pButton label="Enregistrer" [disabled]="loading"></button>
+  <button type="button" pButton label="Annuler" class="p-button-secondary" (click)="router.navigate(['/types'])"></button>
+</form>

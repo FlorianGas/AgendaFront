@@ -1,0 +1,89 @@
+.availability-batch-form{
+  max-width: 75%;
+  margin: 1rem 1rem 1rem auto;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+
+  h2{
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 2rem;
+  }
+  .p-field{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+
+    label{
+      font-weight: 600;
+      color: #333333;
+      margin-bottom: 0.5rem;
+    }
+    input, p-calendar , p-dropdown{
+      width: 100%;
+    }
+  }
+  .flex{
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+
+    .p-button{
+      min-width: 150px;
+    }
+  }
+  @media (max-width: 1024px) {
+    max-width: 95%;
+    margin: 1rem auto;
+    padding: 1.25rem;
+
+    h2 {
+      font-size: 1.4rem;
+    }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    max-width: 100%;
+    margin: 1rem auto;
+    padding: 1rem;
+
+    .flex {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.75rem;
+
+      .p-button {
+        width: 100%;
+        min-width: auto;
+      }
+    }
+
+    h2 {
+      font-size: 1.3rem;
+    }
+  }
+
+  /* PETIT MOBILE */
+  @media (max-width: 480px) {
+    padding: 0.75rem;
+
+    h2 {
+      font-size: 1.2rem;
+    }
+
+    .p-field {
+      label {
+        font-size: 0.9rem;
+      }
+
+      input,
+      p-calendar,
+      p-dropdown {
+        font-size: 0.9rem;
+      }
+    }
+  }
+}

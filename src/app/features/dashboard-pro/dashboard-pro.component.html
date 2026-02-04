@@ -1,0 +1,233 @@
+<div class="dashboard-pro-container">
+
+  <!-- Boutons d’action -->
+  <div class="action">
+    <button pButton label="Ajouter dispo" icon="pi pi-calendar-plus"
+            class="p-button-secondary" (click)="onAddAvailability()"></button>
+    <button pButton label="Nouveau RDV" icon="pi pi-plus"
+            class="p-button-primary" (click)="onNewAppointment()"></button>
+    <button pButton type="button" label="Exporter semaine CSV" icon="pi pi-file" (click)="exportWeekCalendarCSV()"></button>
+  </div>
+
+
+  <!-- Calendrier -->
+  <div class="calendar-loading-overlay" *ngIf="calendarLoading">
+    <div class="spinner-container">
+      <i class="pi pi-spin pi-spinner text-4xl text-primary"></i>
+      <p class="mt-2 text-gray-600">Chargement du calendrier...</p>
+    </div>
+  </div>
+  <full-calendar #calendar [options]="calendarOptions"></full-calendar>
+
+  <!-- Dialog : Choix RDV ou disponibilité -->
+  <p-dialog
+    [(visible)]="dialogChoiceVisible"
+    [modal]="true"
+    [closable]="false"
+    [dismissableMask]="true"
+    [style]="{ width: '400px' }"
+    [breakpoints]="{'768px': '95vw', '480px': '98vw'}"
+  >
+    <div class="dialog-close-container">
+      <button
+        pButton icon="pi pi-times"
+        class="p-button-rounded p-button-sm dialog-close-button"
+        (click)="dialogChoiceVisible = false"
+      ></button>
+    </div>
+
+    <div class="text-center mt-3">
+      <i class="pi pi-calendar-plus text-4xl text-primary mb-3 animate-bounce"></i>
+      <p class="mb-3 text-gray-700">
+        Souhaitez-vous ajouter une <strong>disponibilité</strong> ou créer un <strong>rendez-vous</strong> pour le :
+      </p>
+      <p class="font-bold text-lg mb-3">{{ selectedDateISO | date: 'fullDate' }}</p>
+      <div class="flex justify-center gap-1 mt-1">
+        <button pButton class="p-button-text" (click)="dialogChoiceVisible = false" label="Annuler"></button>
+        <button pButton class="p-button-outlined p-button-info" (click)="onDeleteDispo()" label="Supprimer"></button>
+        <button pButton class="p-button-outlined p-button-info" (click)="onChooseDispo()" label="Disponibilité"></button>
+        <button pButton class="p-button-success" (click)="onChooseRDV()" label="RDV"></button>
+      </div>
+    </div>
+  </p-dialog>
+
+  <!-- Dialog : Détail du rendez-vous -->
+  <p-dialog
+    [(visible)]="dialogViewVisible"
+    [modal]="true"
+    [closable]="false"
+    [style]="{ width: '500px' }"
+    [dismissableMask]="true"
+    [breakpoints]="{'768px': '95vw', '480px': '98vw'}"
+    header="Visuel du rendez-vous"
+    (onHide)="onDialogClose()"
+    *ngIf="selectedAppointment"
+  >
+    <div class="dialog-close-container">
+      <button
+        pButton icon="pi pi-times"
+        class="p-button-rounded p-button-sm dialog-close-button"
+        (click)="dialogViewVisible = false"
+      ></button>
+    </div>
+
+    <div class="p-3">
+      <h3 class="mb-3">{{ selectedAppointment.type_id?.name | titlecase }}</h3>
+      <p class="mb-2"><strong>Date :</strong> {{ selectedAppointment.scheduled_time | date: 'fullDate' }} à {{ selectedAppointment.scheduled_time | date: 'HH:mm' }}</p>
+      <p class="mb-2"><strong>Durée :</strong> {{ selectedAppointment.duration_minutes }} min</p>
+      <p class="mb-2"><strong>Client :</strong> {{ getClientName(selectedAppointment) }}</p>
+      <p class="mb-2"><strong>Statut :</strong> {{ selectedAppointment.status | titlecase }}</p>
+
+      <div class="mt-4 flex justify-end gap-2">
+
+        <button pButton label="Ajouter créneau" class="p-button-text" icon="pi pi-plus" (click)="onAddSlotFromAppointment()"></button>
+        <button pButton label="Fermer" class="p-button-text" (click)="onDialogClose()"></button>
+        <button pButton label="Supprimer" icon="pi pi-trash" class="p-button-danger" (click)="confirmDeleteVisible = true"></button>
+        <button pButton label="Modifier" icon="pi pi-pencil" class="p-button-primary" (click)="openEditDialog()"></button>
+      </div>
+    </div>
+  </p-dialog>
+
+  <!-- Dialog : Édition du rendez-vous -->
+  <p-dialog
+    [(visible)]="dialogEditVisible"
+    [modal]="true"
+    header="Modification du rendez-vous"
+    [closable]="false"
+    [style]="{ width: '420px' }"
+    [breakpoints]="{'768px': '95vw', '480px': '98vw'}"
+    (onHide)="onDialogClose()"
+  >
+    <!-- Bouton croix -->
+    <div class="dialog-close-container">
+      <button
+        pButton icon="pi pi-times"
+        class="p-button-rounded p-button-sm dialog-close-button"
+        (click)="dialogEditVisible = false"
+      ></button>
+    </div>
+
+    <!-- Formulaire -->
+    <form
+      *ngIf="editAppointment && appointmentTypes.length"
+      (ngSubmit)="handleAppointmentSave(editAppointment)"
+      class="p-fluid"
+    >
+      <!-- Prestation -->
+      <div class="p-field mb-3">
+        <label for="type" class="block font-semibold mb-1">Prestation</label>
+        <p-dropdown
+          id="type"
+          [options]="appointmentTypes"
+          [(ngModel)]="editAppointment.type_id"
+          name="type_id"
+          optionLabel="name"
+          optionValue="_id"
+          [disabled]="true"
+          placeholder="Sélectionnez une prestation"
+          styleClass="w-full"
+        ></p-dropdown>
+      </div>
+
+      <!-- Date et heure -->
+      <div class="p-field mb-3">
+        <label for="scheduled_time" class="block font-semibold text-gray-700 mb-1">Date et heure</label>
+        <input pInputText
+          id="scheduled_time"
+          type="datetime-local"
+          class="form-control"
+          [(ngModel)]="editAppointment.scheduled_time"
+          name="scheduled_time"
+          required
+        />
+      </div>
+
+      <!-- Durée -->
+      <div class="p-field mb-3">
+        <label for="duration" class="block font-semibold mb-1">Durée (minutes)</label>
+        <input
+          id="duration"
+          type="number"
+          class="p-inputtext p-component w-full"
+          [(ngModel)]="editAppointment.duration_minutes"
+          name="duration_minutes"
+          required
+          disabled
+          min="5"
+        />
+      </div>
+
+      <!-- Statut -->
+      <div class="p-field mb-4">
+        <label class="block font-semibold mb-2">Statut</label>
+        <div class="flex flex-col gap-2">
+          <div *ngFor="let status of statusOptions" class="flex align-items-center gap-2">
+            <p-radioButton
+              name="status"
+              [value]="status.value"
+              [(ngModel)]="editAppointment.status"
+              inputId="{{ 'status_' + status.value }}"
+            ></p-radioButton>
+            <label [for]="'status_' + status.value" class="text-sm capitalize">
+              {{ status.label }}
+            </label>
+          </div>
+        </div>
+      </div>
+
+
+      <!-- Boutons -->
+      <div class="flex justify-end gap-2 mt-4">
+        <button
+          pButton
+          type="button"
+          class="p-button-secondary"
+          (click)="dialogEditVisible = false"
+          label="Annuler"
+        ></button>
+        <button
+          pButton
+          type="submit"
+          class="p-button-primary"
+          label="Enregistrer"
+        ></button>
+      </div>
+    </form>
+
+    <!-- Chargement -->
+    <div *ngIf="!appointmentTypes.length" class="text-center p-3 text-gray-500">
+      Chargement des prestations...
+    </div>
+  </p-dialog>
+
+
+
+  <!-- Dialog : Confirmation suppression -->
+  <p-dialog
+    [(visible)]="confirmDeleteVisible"
+    [modal]="true"
+    [closable]="false"
+    header="Confirmer la suppression"
+    [style]="{ width: '350px'}"
+    [breakpoints]="{'768px': '95vw', '480px': '98vw'}"
+    [dismissableMask]="true"
+  >
+    <div class="dialog-close-container">
+      <button
+        pButton icon="pi pi-times"
+        class="p-button-rounded p-button-sm dialog-close-button"
+        (click)="confirmDeleteVisible = false"
+      ></button>
+    </div>
+
+    <div class="p-3 text-center">
+      <i class="pi pi-exclamation-triangle text-3xl text-red-500 mb-3"></i>
+      <p class="mb-3">Souhaitez-vous vraiment supprimer ce rendez-vous ?</p>
+      <div class="flex justify-end gap-2">
+        <button pButton label="Annuler" class="p-button-secondary" (click)="confirmDeleteVisible = false"></button>
+        <button pButton label="Oui, supprimer" class="p-button-danger" (click)="confirmDeleteAppointment(); confirmDeleteVisible = false"></button>
+      </div>
+    </div>
+  </p-dialog>
+
+</div>

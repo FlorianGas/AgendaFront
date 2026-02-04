@@ -1,0 +1,66 @@
+<div class="availability-container">
+  <h2>Mes disponibilités</h2>
+  <form [formGroup]="form" (ngSubmit)="addSlot()"class="p-fluid form-section">
+    <div class="form-row">
+      <div class="field">
+        <label for="start">Début</label>
+        <input type="datetime-local" id="start" pInputText formControlName="start_time">
+      </div>
+      <div class="field">
+        <label for="end">Fin</label>
+        <input type="datetime-local" id="end" pInputText formControlName="end_time">
+      </div>
+    </div>
+    <button pButton type="submit" label="Ajouter un créneau "[disabled]="form.invalid" class="p-button-success mt-2"></button>
+  </form>
+
+
+  <p-divider/>
+  <p-table [value]="availability" [paginator]="true" [rows]="5" *ngIf="availability.length > 0">
+    <ng-template pTemplate="header">
+      <tr>
+        <th>Début</th>
+        <th>Fin</th>
+        <th>Statut</th>
+        <th>Action</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate ="body" let-slot>
+      <tr>
+        <td>{{slot.start_time | date: 'short'}}</td>
+        <td>{{slot.end_time | date:'short'}}</td>
+        <td>
+          <span class="badge" [ngClass]="{'dispo' : slot.is_available, 'indispo' :!slot.is_available }">
+            {{slot.is_available ? 'Disponible ' : 'Indisponible'}}
+          </span>
+        </td>
+        <td>
+          <button pButton icon="pi pi-pencil" class="p-button-rounded p-button-info mr-2" (click)="startEdit(slot)"></button>
+          <button pButton icon="pi pi-trash" class="p-button-rounded p-button-danger" (click)="deleteSlot(slot._id)"></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+  <!-- Section de modification d’un créneau -->
+  <div *ngIf="editingSlotId" class="form-section mt-4">
+    <h3>✏️ Modifier le créneau</h3>
+    <form [formGroup]="editForm" (ngSubmit)="updateSlot()" class="p-fluid form-row">
+      <div class="field">
+        <label for="edit_start">Début</label>
+        <input id="edit_start" type="datetime-local" pInputText formControlName="start_time" />
+      </div>
+      <div class="field">
+        <label for="edit_end">Fin</label>
+        <input id="edit_end" type="datetime-local" pInputText formControlName="end_time" />
+      </div>
+      <div class="mt-2" style="display: flex; gap: 1rem">
+        <button pButton type="submit" label="Enregistrer" class="p-button-primary" [disabled]="editForm.invalid"></button>
+        <button pButton type="button" label="Annuler" class="p-button-secondary" (click)="cancelEdit()"></button>
+      </div>
+    </form>
+  </div>
+
+
+  <p *ngIf="!loading && availability.length ===0 ">Aucun créneau enregistré.</p>
+  <p-progress-spinner *ngIf="loading" styleClass="center-spinner"/>
+</div>

@@ -1,0 +1,134 @@
+.dashboard-client {
+  max-width: 75%;
+  margin: 1rem 1rem 1rem auto;
+  padding: 1rem;
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.05);
+  .button-group {
+    display: block; /* ou flex si besoin */
+    margin-bottom: 1rem;
+  }
+
+  h2 {
+    text-align: center;
+    color: #00796b;
+    font-weight: 600;
+    margin-bottom: 2rem;
+  }
+
+  .p-panel {
+    margin-bottom: 1.5rem;
+
+    ::ng-deep .p-panel-header {
+      background: #e0f2f1;
+      color: #004d40;
+      font-weight: 600;
+    }
+  }
+
+  ::ng-deep .custom-panel-header .p-panel-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  ::ng-deep .custom-panel-header .p-panel-header-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  ul.p-list {
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+
+    li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+
+      i {
+        flex-shrink: 0;
+      }
+
+      .flex-grow-1 {
+        flex: 1 1 auto;
+      }
+
+      button {
+        flex-shrink: 0;
+        min-width: 80px;
+      }
+    }
+
+    .my-custom-selected {
+      background-color: #3da090 !important;
+      color: white !important;
+    }
+  }
+
+  @media (max-width: 600px) {
+    ul.p-list li {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    ul.p-list li button {
+      width: 100%;
+    }
+  }
+
+  .text-muted {
+    color: #888;
+    font-size: 0.8rem;
+  }
+}
+
+.dialog-close-container {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0.5rem 0.75rem 0 0.75rem;
+}
+
+.dialog-close-button {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  color: #6b7280 !important;
+  width: 2rem;
+  height: 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  padding: 0;
+  font-size: 1.2rem;
+}
+
+.dialog-close-button:hover {
+  background-color: #fee2e2 !important;
+  color: #dc2626 !important;
+  transform: scale(1.05);
+}
+p-calendar {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  z-index: 1001;
+}
+.selected-slot {
+  font-weight: bold;
+  box-shadow: 0 0 0 2px var(--primary-color) inset;
+}
+
+/* Force le vert pour la sélection */
+.p-button.p-button-success.selected-slot {
+  background-color: var(--green-500) !important;
+  border-color: var(--green-500) !important;
+  color: #ffffff !important;
+}
